@@ -17,36 +17,26 @@
  * under the License.
  */
 
-#ifndef SMP_SVR_
-#define SMP_SVR_
+#ifndef H_OMP_PRIV
+#define H_OMP_PRIV
 
-#include <stdbool.h>
-#include "nimble/ble.h"
-#include "modlog/modlog.h"
+#include "mgmt/mgmt.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-struct ble_hs_cfg;
-struct ble_gatt_register_ctxt;
-
-/** GATT server. */
-#define GATT_SVR_SVC_ALERT_UUID               0x1811
-#define GATT_SVR_CHR_SUP_NEW_ALERT_CAT_UUID   0x2A47
-#define GATT_SVR_CHR_NEW_ALERT                0x2A46
-#define GATT_SVR_CHR_SUP_UNR_ALERT_CAT_UUID   0x2A48
-#define GATT_SVR_CHR_UNR_ALERT_STAT_UUID      0x2A45
-#define GATT_SVR_CHR_ALERT_NOT_CTRL_PT        0x2A44
-
-void gatt_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg);
-int gatt_svr_init(void);
-
-/** Misc. */
-void print_bytes(const uint8_t *bytes, int len);
-void print_addr(const void *addr);
+int omp_encode_mgmt_hdr(struct CborEncoder *enc, struct mgmt_hdr hdr);
+int omp_send_err_rsp(struct CborEncoder *enc,
+                     const struct mgmt_hdr *hdr,
+                     int mgmt_status);
+int omp_read_hdr(struct CborValue *cv, struct mgmt_hdr *out_hdr);
+int omp_process_mgmt_hdr(struct mgmt_hdr *req_hdr,
+                         struct mgmt_hdr *rsp_hdr,
+                         struct mgmt_ctxt *ctxt);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* H_OMP_IMPL */
