@@ -77,7 +77,7 @@ log_mgmt_mynewt_err_map(int mynewt_os_err)
 int
 log_mgmt_impl_get_num_entries(const struct log_mgmt_log *log, int index, uint32_t *entries)
 {
-#if MYNEWT_VAL(LOG_FLAGS_TLV_SUPPORT)
+#if MYNEWT_VAL(LOG_FLAGS_TRAILER_SUPPORT)
     struct log *tmplog;
     uint32_t tmp_entries = 0;
     int rc = 0;
@@ -222,7 +222,7 @@ mynewt_log_mgmt_walk_cb(struct log *log, struct log_offset *log_offset,
     entry.flags = leh->ue_flags;
     entry.imghash = (leh->ue_flags & LOG_FLAGS_IMG_HASH) ?
         leh->ue_imghash : NULL;
-    entry.num_entries = (leh->ue_flags & LOG_FLAGS_TLV_SUPPORT) ?
+    entry.num_entries = (leh->ue_flags & LOG_FLAGS_TRAILER_SUPPORT) ?
         leh->ue_num_entries : 0;
     entry.len = len;
     entry.data = mynewt_log_mgmt_walk_arg->chunk;
